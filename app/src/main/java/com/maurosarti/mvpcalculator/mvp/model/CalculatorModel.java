@@ -21,10 +21,19 @@ public class CalculatorModel {
         }
     }
 
-    public static boolean isOperand(char lastDigit) {
+    public boolean isOperand(char lastDigit) {
         if(lastDigit == '+' || lastDigit == '-' || lastDigit == '*' || lastDigit == '/'){
             return true;
         }
         return false;
+    }
+
+    public String parseFirstNumber(String account) {
+        for (int i=0; i<account.length();i++){
+            if(isOperand(account.charAt(i))){
+                return account.substring(0, i);
+            }
+        }
+        return null;
     }
 }

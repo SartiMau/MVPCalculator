@@ -5,9 +5,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.maurosarti.mvpcalculator.R;
-import com.maurosarti.mvpcalculator.mvp.model.CalculatorModel;
-import com.maurosarti.mvpcalculator.util.bus.RxBus;
-import com.maurosarti.mvpcalculator.util.bus.observers.ResultButtonPressedBusObserver;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,9 +42,8 @@ public class CalculatorView extends ActivityView{
 
     @OnClick({R.id.btnNum0, R.id.btnNum1, R.id.btnNum2, R.id.btnNum3, R.id.btnNum4, R.id.btnNum5, R.id.btnNum6,
             R.id.btnNum7, R.id.btnNum8, R.id.btnNum9, R.id.btnSuma, R.id.btnResta, R.id.btnMultiplicacion,
-            R.id.btnDivision, R.id.btnBorrar})
+            R.id.btnDivision})
     public void calculatorButtonPressed(Button btn){
-        boolean borro = false;
         int btnId = btn.getId();
         switch (btnId){
             case R.id.btnNum0:  writeTextView(txtAccount, "0");
@@ -76,15 +72,9 @@ public class CalculatorView extends ActivityView{
                 break;
             case R.id.btnMultiplicacion:  writeOperatorTextView(txtAccount, "*");
                 break;
-            case R.id.btnDivision:  writeOperatorTextView(txtAccount, "/");
-                break;
-            default: removeLastDigit(txtAccount);
-                borro = true;
-                break;
+            default: writeOperatorTextView(txtAccount, "/");
         }
-        if(!borro) {
-            btnBorrar.setEnabled(true);
-        }
+        btnBorrar.setEnabled(true);
     }
 
     private void writeOperatorTextView(TextView textView, String operator) {
@@ -92,31 +82,14 @@ public class CalculatorView extends ActivityView{
         disableOperators();
     }
 
-    private void disableOperators() {
+    public void disableOperators() {
         btnSuma.setEnabled(false);
         btnResta.setEnabled(false);
         btnMultiplicacion.setEnabled(false);
         btnDivision.setEnabled(false);
     }
 
-    private void removeLastDigit(TextView textView) {
-        String subString = textView.getText().toString().substring(0, textView.getText().toString().length()-1);
-        char lastDigit = textView.getText().toString().charAt(textView.getText().toString().length()-1);
-
-        textView.setText(subString);
-
-        if (CalculatorModel.isOperand(lastDigit)){
-            enableOperators();
-        }
-
-        if(txtAccount.getText().toString().isEmpty()){
-            btnBorrar.setEnabled(false);
-        } else {
-            btnBorrar.setEnabled(true);
-        }
-    }
-
-    private void enableOperators() {
+    public void enableOperators() {
         btnSuma.setEnabled(true);
         btnResta.setEnabled(true);
         btnMultiplicacion.setEnabled(true);
@@ -125,10 +98,5 @@ public class CalculatorView extends ActivityView{
 
     private void writeTextView(TextView textView, String digit) {
         textView.setText(txtAccount.getText().toString() + digit);
-    }
-
-    @OnClick(R.id.btnIgual)
-    public void resultButtonPressed() {
-        RxBus.post(new ResultButtonPressedBusObserver.ResultButtonPressed(txtAccount.getText().toString()));
     }
 }

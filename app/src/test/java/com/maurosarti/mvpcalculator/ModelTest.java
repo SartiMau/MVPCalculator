@@ -38,6 +38,31 @@ public class ModelTest {
     }
 
     @Test
+    public void shouldDoParse(){
+        assertEquals("256", model.parseFirstNumber("256/2"));
+    }
+
+    @Test
+    public void shouldBeOperatorDiv(){
+        assertEquals("true", String.valueOf(model.isOperand('/')));
+    }
+
+    @Test
+    public void shouldBeOperatorMul(){
+        assertEquals("true", String.valueOf(model.isOperand('*')));
+    }
+
+    @Test
+    public void shouldBeOperatorSum(){
+        assertEquals("true", String.valueOf(model.isOperand('+')));
+    }
+
+    @Test
+    public void shouldBeOperatorSub(){
+        assertEquals("true", String.valueOf(model.isOperand('-')));
+    }
+
+    @Test
     public void additionIsCorrect() {
         assertEquals(4, 2 + 2);
     }
