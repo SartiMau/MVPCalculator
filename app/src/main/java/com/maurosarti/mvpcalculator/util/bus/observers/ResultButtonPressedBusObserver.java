@@ -8,5 +8,10 @@ public abstract class ResultButtonPressedBusObserver extends BusObserver<ResultB
 
     public static class ResultButtonPressed {
 
+        public String account;
+
+        public ResultButtonPressed(String account) {
+            this.account = account;
+        }
     }
 }
