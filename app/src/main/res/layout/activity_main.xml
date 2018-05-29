@@ -164,4 +164,11 @@
             android:layout_weight="1"
             android:text="@string/division" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnNuevo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/nuevo" />
 </LinearLayout>

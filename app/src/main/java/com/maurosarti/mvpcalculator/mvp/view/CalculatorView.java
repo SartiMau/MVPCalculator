@@ -35,6 +35,14 @@ public class CalculatorView extends ActivityView{
         txtResult.setText(result);
     }
 
+    @OnClick(R.id.btnNuevo)
+    public void nuevoButtonPressed(){
+        txtAccount.setText("");
+        txtResult.setText("");
+        enableOperators();
+        btnBorrar.setEnabled(false);
+    }
+
     @OnClick({R.id.btnNum0, R.id.btnNum1, R.id.btnNum2, R.id.btnNum3, R.id.btnNum4, R.id.btnNum5, R.id.btnNum6,
             R.id.btnNum7, R.id.btnNum8, R.id.btnNum9, R.id.btnSuma, R.id.btnResta, R.id.btnMultiplicacion,
             R.id.btnDivision, R.id.btnBorrar})
