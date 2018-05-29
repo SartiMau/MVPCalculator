@@ -19,7 +19,7 @@ public class ActivityView {
         return activityRef.get();
     }
 
-    /*@Nullable
+    @Nullable
     public Context getContext() {
         return getActivity();
     }
@@ -28,5 +28,5 @@ public class ActivityView {
     public FragmentManager getFragmentManager() {
         Activity activity = getActivity();
         return (activity != null) ? activity.getFragmentManager() : null;
-    }*/
+    }
 }

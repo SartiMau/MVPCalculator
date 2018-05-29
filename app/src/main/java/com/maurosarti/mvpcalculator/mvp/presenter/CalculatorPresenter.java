@@ -17,8 +17,25 @@ public class CalculatorPresenter {
         this.view = calculatorView;
     }
 
-    public void onResultButtonPressed(){
-        view.setResult(model.solve(view.getMathAccount()));
+    public void onResultButtonPressed(String account){
+        String firstNumber;
+        String secondNumber;
+        String operator;
+
+        firstNumber = parseFirstNumber(account);
+        operator = account.substring(firstNumber.length(), firstNumber.length()+1);
+        secondNumber = account.substring(firstNumber.length()+1);
+
+        view.setResult(model.solve(Integer.valueOf(firstNumber), Integer.valueOf(secondNumber), operator));
+    }
+
+    private String parseFirstNumber(String account) {
+        for (int i=0; i<account.length();i++){
+            if(view.isOperand(account.charAt(i))){
+                return account.substring(0, i);
+            }
+        }
+        return null;
     }
 
     public void register() {
@@ -31,7 +48,7 @@ public class CalculatorPresenter {
         RxBus.subscribe(activity, new ResultButtonPressedBusObserver() {
             @Override
             public void onEvent(ResultButtonPressedBusObserver.ResultButtonPressed value) {
-                onResultButtonPressed();
+                onResultButtonPressed(value.account);
             }
         });
     }
