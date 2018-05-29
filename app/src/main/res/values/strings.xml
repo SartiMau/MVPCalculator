@@ -21,6 +21,7 @@
     <string name="division">/</string>
     <string name="igual">=</string>
     <string name="borrar">BORRAR</string>
+    <string name="nuevo">NUEVO</string>
 
     <string name="error">ERROR</string>
 </resources>
