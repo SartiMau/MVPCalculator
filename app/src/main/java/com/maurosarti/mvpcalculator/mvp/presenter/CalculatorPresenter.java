@@ -5,7 +5,6 @@ import android.app.Activity;
 import com.maurosarti.mvpcalculator.mvp.model.CalculatorModel;
 import com.maurosarti.mvpcalculator.mvp.view.CalculatorView;
 import com.maurosarti.mvpcalculator.util.bus.RxBus;
-import com.maurosarti.mvpcalculator.util.Utils;
 import com.maurosarti.mvpcalculator.util.bus.observers.ResultButtonPressedBusObserver;
 
 public class CalculatorPresenter {
@@ -32,7 +31,7 @@ public class CalculatorPresenter {
 
     private String parseFirstNumber(String account) {
         for (int i=0; i<account.length();i++){
-            if(Utils.isOperand(account.charAt(i))){
+            if(CalculatorModel.isOperand(account.charAt(i))){
                 return account.substring(0, i);
             }
         }

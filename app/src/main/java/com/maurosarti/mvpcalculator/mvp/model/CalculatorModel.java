@@ -20,4 +20,11 @@ public class CalculatorModel {
                 return Resources.getSystem().getString(R.string.error);
         }
     }
+
+    public static boolean isOperand(char lastDigit) {
+        if(lastDigit == '+' || lastDigit == '-' || lastDigit == '*' || lastDigit == '/'){
+            return true;
+        }
+        return false;
+    }
 }
