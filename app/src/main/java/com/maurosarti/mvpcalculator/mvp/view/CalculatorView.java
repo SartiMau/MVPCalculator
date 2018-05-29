@@ -1,11 +1,11 @@
 package com.maurosarti.mvpcalculator.mvp.view;
 
 import android.app.Activity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.maurosarti.mvpcalculator.R;
+import com.maurosarti.mvpcalculator.util.Utils;
 import com.maurosarti.mvpcalculator.util.bus.RxBus;
 import com.maurosarti.mvpcalculator.util.bus.observers.ResultButtonPressedBusObserver;
 
@@ -105,7 +105,7 @@ public class CalculatorView extends ActivityView{
 
         textView.setText(subString);
 
-        if (isOperand(lastDigit)){
+        if (Utils.isOperand(lastDigit)){
             enableOperators();
         }
 
@@ -115,14 +115,6 @@ public class CalculatorView extends ActivityView{
             btnBorrar.setEnabled(true);
         }
     }
-
-    public boolean isOperand(char lastDigit) {
-        if(lastDigit == '+' || lastDigit == '-' || lastDigit == '*' || lastDigit == '/'){
-            return true;
-        }
-        return false;
-    }
-
 
     private void enableOperators() {
         btnSuma.setEnabled(true);
