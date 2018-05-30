@@ -99,4 +99,20 @@ public class CalculatorView extends ActivityView{
     private void writeTextView(TextView textView, String digit) {
         textView.setText(txtAccount.getText().toString() + digit);
     }
+
+    public String getAccount(){
+        return txtAccount.getText().toString();
+    }
+
+    public void setAccount(String account){
+        this.txtAccount.setText(account);
+    }
+
+    public void disableBtnBorrar() {
+        btnBorrar.setEnabled(false);
+    }
+
+    public void enableBtnBorrar() {
+        btnBorrar.setEnabled(true);
+    }
 }

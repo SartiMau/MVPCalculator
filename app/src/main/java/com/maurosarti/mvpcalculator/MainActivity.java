@@ -15,9 +15,6 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.txtAccount) TextView txtAccount;
-    @BindView(R.id.btnBorrar) Button btnBorrar;
-
     private CalculatorPresenter presenter;
 
     @Override
@@ -31,25 +28,12 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnIgual)
     public void resultButtonPressed() {
-        presenter.onResultButtonPressed(txtAccount.getText().toString());
+        presenter.onResultButtonPressed();
     }
 
     @OnClick(R.id.btnBorrar)
     public void removeLastDigit() {
-        String subString = txtAccount.getText().toString().substring(0, txtAccount.getText().toString().length()-1);
-        char lastDigit = txtAccount.getText().toString().charAt(txtAccount.getText().toString().length()-1);
-
-        txtAccount.setText(subString);
-
-        if (presenter.isOperand(lastDigit)){
-            presenter.enableOperators();
-        }
-
-        if(txtAccount.getText().toString().isEmpty()){
-            btnBorrar.setEnabled(false);
-        } else {
-            btnBorrar.setEnabled(true);
-        }
+        presenter.removeLastDigit();
     }
 
     @Override

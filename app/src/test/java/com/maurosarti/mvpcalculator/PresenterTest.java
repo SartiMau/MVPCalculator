@@ -37,8 +37,10 @@ public class PresenterTest {
     public void shouldDoSum(){
         when(model.solve(5, 8, "+")).thenReturn("13");
         when(model.parseFirstNumber("5+8")).thenReturn("5");
-        presenter.onResultButtonPressed("5+8");
+        when(view.getAccount()).thenReturn("5+8");
+        presenter.onResultButtonPressed();
         verify(view).setResult("13");
+        verify(view).getAccount();
         verifyNoMoreInteractions(view);
     }
 
@@ -46,8 +48,10 @@ public class PresenterTest {
     public void shouldDoMul(){
         when(model.solve(5, 8, "*")).thenReturn("40");
         when(model.parseFirstNumber("5*8")).thenReturn("5");
-        presenter.onResultButtonPressed("5*8");
+        when(view.getAccount()).thenReturn("5*8");
+        presenter.onResultButtonPressed();
         verify(view).setResult("40");
+        verify(view).getAccount();
         verifyNoMoreInteractions(view);
     }
 
@@ -55,8 +59,10 @@ public class PresenterTest {
     public void shouldDoSub(){
         when(model.solve(10, 8, "-")).thenReturn("2");
         when(model.parseFirstNumber("10-8")).thenReturn("10");
-        presenter.onResultButtonPressed("10-8");
+        when(view.getAccount()).thenReturn("10-8");
+        presenter.onResultButtonPressed();
         verify(view).setResult("2");
+        verify(view).getAccount();
         verifyNoMoreInteractions(view);
     }
 
@@ -64,8 +70,10 @@ public class PresenterTest {
     public void shouldDoDiv(){
         when(model.solve(256, 2, "/")).thenReturn("128");
         when(model.parseFirstNumber("256/2")).thenReturn("256");
-        presenter.onResultButtonPressed("256/2");
+        when(view.getAccount()).thenReturn("256/2");
+        presenter.onResultButtonPressed();
         verify(view).setResult("128");
+        verify(view).getAccount();
         verifyNoMoreInteractions(view);
     }
 

@@ -17,7 +17,9 @@ public class CalculatorPresenter {
         this.view = calculatorView;
     }
 
-    public void onResultButtonPressed(String account){
+    public void onResultButtonPressed(){
+        String account = view.getAccount();
+
         String firstNumber;
         String secondNumber;
         String operator;
@@ -29,11 +31,26 @@ public class CalculatorPresenter {
         view.setResult(model.solve(Integer.valueOf(firstNumber), Integer.valueOf(secondNumber), operator));
     }
 
-    public boolean isOperand(char lastDigit) {
-        return model.isOperand(lastDigit);
-    }
-
     public void enableOperators() {
         view.enableOperators();
+    }
+
+    public void removeLastDigit() {
+        String account = view.getAccount();
+
+        String subString = account.substring(0, account.length()-1);
+        char lastDigit = account.charAt(account.length()-1);
+
+        view.setAccount(subString);
+
+        if (model.isOperand(lastDigit)){
+            enableOperators();
+        }
+
+        if(account.isEmpty()){
+            view.disableBtnBorrar();
+        } else {
+            view.enableBtnBorrar();
+        }
     }
 }
