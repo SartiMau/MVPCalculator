@@ -39,10 +39,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        presenter.register();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        presenter.unregister();
     }
 }

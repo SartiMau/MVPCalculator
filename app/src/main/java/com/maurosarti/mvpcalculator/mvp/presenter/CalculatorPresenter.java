@@ -1,10 +1,12 @@
 package com.maurosarti.mvpcalculator.mvp.presenter;
 
+
 import android.app.Activity;
 
 import com.maurosarti.mvpcalculator.mvp.model.CalculatorModel;
 import com.maurosarti.mvpcalculator.mvp.view.CalculatorView;
 import com.maurosarti.mvpcalculator.util.bus.RxBus;
+import com.maurosarti.mvpcalculator.util.bus.observers.CalculatorButtonPressedBusObserver;
 import com.maurosarti.mvpcalculator.util.bus.observers.ResultButtonPressedBusObserver;
 
 public class CalculatorPresenter {
@@ -20,13 +22,9 @@ public class CalculatorPresenter {
     public void onResultButtonPressed(){
         String account = view.getAccount();
 
-        String firstNumber;
-        String secondNumber;
-        String operator;
-
-        firstNumber = model.parseFirstNumber(account);
-        operator = account.substring(firstNumber.length(), firstNumber.length()+1);
-        secondNumber = account.substring(firstNumber.length()+1);
+        String firstNumber = model.parseFirstNumber(account);
+        String operator = account.substring(firstNumber.length(), firstNumber.length()+1);
+        String secondNumber = account.substring(firstNumber.length()+1);
 
         view.setResult(model.solve(Integer.valueOf(firstNumber), Integer.valueOf(secondNumber), operator));
     }
@@ -47,10 +45,43 @@ public class CalculatorPresenter {
             enableOperators();
         }
 
-        if(account.isEmpty()){
+        if(subString.isEmpty()){
+            view.disableOperators();
             view.disableBtnBorrar();
         } else {
             view.enableBtnBorrar();
         }
+    }
+
+    public void onCalculatorButtonPressed(String digit){
+        view.setAccount(view.getAccount() + digit);
+        if(model.isOperand(digit.charAt(0))){
+            view.disableOperators();
+        }
+        view.enableBtnBorrar();
+    }
+
+    public void register() {
+        Activity activity = view.getActivity();
+
+        if (activity==null){
+            return;
+        }
+
+        RxBus.subscribe(activity, new CalculatorButtonPressedBusObserver() {
+            @Override
+            public void onEvent(CalculatorButtonPressedBusObserver.CalculatorButtonPressed value) {
+                onCalculatorButtonPressed(value.getDigit());
+            }
+        });
+    }
+
+    public void unregister() {
+        Activity activity = view.getActivity();
+
+        if (activity==null){
+            return;
+        }
+        RxBus.clear(activity);
     }
 }

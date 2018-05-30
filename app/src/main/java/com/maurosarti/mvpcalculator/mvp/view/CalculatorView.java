@@ -5,6 +5,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.maurosarti.mvpcalculator.R;
+import com.maurosarti.mvpcalculator.util.bus.RxBus;
+import com.maurosarti.mvpcalculator.util.bus.observers.CalculatorButtonPressedBusObserver;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +27,7 @@ public class CalculatorView extends ActivityView{
         super(activity);
         ButterKnife.bind(this, activity);
 
-        btnBorrar.setEnabled(false);
+        disableBtnBorrar();
     }
 
     public void setResult(String result) {
@@ -44,42 +46,7 @@ public class CalculatorView extends ActivityView{
             R.id.btnNum7, R.id.btnNum8, R.id.btnNum9, R.id.btnSuma, R.id.btnResta, R.id.btnMultiplicacion,
             R.id.btnDivision})
     public void calculatorButtonPressed(Button btn){
-        int btnId = btn.getId();
-        switch (btnId){
-            case R.id.btnNum0:  writeTextView(txtAccount, "0");
-                break;
-            case R.id.btnNum1:  writeTextView(txtAccount, "1");
-                break;
-            case R.id.btnNum2:  writeTextView(txtAccount, "2");
-                break;
-            case R.id.btnNum3:  writeTextView(txtAccount, "3");
-                break;
-            case R.id.btnNum4:  writeTextView(txtAccount, "4");
-                break;
-            case R.id.btnNum5:  writeTextView(txtAccount, "5");
-                break;
-            case R.id.btnNum6:  writeTextView(txtAccount, "6");
-                break;
-            case R.id.btnNum7:  writeTextView(txtAccount, "7");
-                break;
-            case R.id.btnNum8:  writeTextView(txtAccount, "8");
-                break;
-            case R.id.btnNum9:  writeTextView(txtAccount, "9");
-                break;
-            case R.id.btnSuma:  writeOperatorTextView(txtAccount, "+");
-                break;
-            case R.id.btnResta:  writeOperatorTextView(txtAccount, "-");
-                break;
-            case R.id.btnMultiplicacion:  writeOperatorTextView(txtAccount, "*");
-                break;
-            default: writeOperatorTextView(txtAccount, "/");
-        }
-        btnBorrar.setEnabled(true);
-    }
-
-    private void writeOperatorTextView(TextView textView, String operator) {
-        writeTextView(textView, operator);
-        disableOperators();
+        RxBus.post(new CalculatorButtonPressedBusObserver.CalculatorButtonPressed(btn.getText().toString()));
     }
 
     public void disableOperators() {
@@ -94,10 +61,6 @@ public class CalculatorView extends ActivityView{
         btnResta.setEnabled(true);
         btnMultiplicacion.setEnabled(true);
         btnDivision.setEnabled(true);
-    }
-
-    private void writeTextView(TextView textView, String digit) {
-        textView.setText(txtAccount.getText().toString() + digit);
     }
 
     public String getAccount(){
