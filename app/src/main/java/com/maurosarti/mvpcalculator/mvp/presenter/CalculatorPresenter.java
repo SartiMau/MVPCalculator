@@ -1,10 +1,12 @@
 package com.maurosarti.mvpcalculator.mvp.presenter;
 
+
 import android.app.Activity;
 
 import com.maurosarti.mvpcalculator.mvp.model.CalculatorModel;
 import com.maurosarti.mvpcalculator.mvp.view.CalculatorView;
 import com.maurosarti.mvpcalculator.util.bus.RxBus;
+import com.maurosarti.mvpcalculator.util.bus.observers.CalculatorButtonPressedBusObserver;
 import com.maurosarti.mvpcalculator.util.bus.observers.ResultButtonPressedBusObserver;
 
 public class CalculatorPresenter {
@@ -17,25 +19,46 @@ public class CalculatorPresenter {
         this.view = calculatorView;
     }
 
-    public void onResultButtonPressed(String account){
-        String firstNumber;
-        String secondNumber;
-        String operator;
+    public void onResultButtonPressed(){
+        String account = view.getAccount();
 
-        firstNumber = parseFirstNumber(account);
-        operator = account.substring(firstNumber.length(), firstNumber.length()+1);
-        secondNumber = account.substring(firstNumber.length()+1);
+        String firstNumber = model.parseFirstNumber(account);
+        String operator = account.substring(firstNumber.length(), firstNumber.length()+1);
+        String secondNumber = account.substring(firstNumber.length()+1);
 
         view.setResult(model.solve(Integer.valueOf(firstNumber), Integer.valueOf(secondNumber), operator));
     }
 
-    private String parseFirstNumber(String account) {
-        for (int i=0; i<account.length();i++){
-            if(view.isOperand(account.charAt(i))){
-                return account.substring(0, i);
-            }
+    public void enableOperators() {
+        view.enableOperators();
+    }
+
+    public void removeLastDigit() {
+        String account = view.getAccount();
+
+        String subString = account.substring(0, account.length()-1);
+        char lastDigit = account.charAt(account.length()-1);
+
+        view.setAccount(subString);
+
+        if (model.isOperand(lastDigit)){
+            enableOperators();
         }
-        return null;
+
+        if(subString.isEmpty()){
+            view.disableOperators();
+            view.disableBtnBorrar();
+        } else {
+            view.enableBtnBorrar();
+        }
+    }
+
+    public void onCalculatorButtonPressed(String digit){
+        view.setAccount(view.getAccount() + digit);
+        if(model.isOperand(digit.charAt(0))){
+            view.disableOperators();
+        }
+        view.enableBtnBorrar();
     }
 
     public void register() {
@@ -45,10 +68,10 @@ public class CalculatorPresenter {
             return;
         }
 
-        RxBus.subscribe(activity, new ResultButtonPressedBusObserver() {
+        RxBus.subscribe(activity, new CalculatorButtonPressedBusObserver() {
             @Override
-            public void onEvent(ResultButtonPressedBusObserver.ResultButtonPressed value) {
-                onResultButtonPressed(value.account);
+            public void onEvent(CalculatorButtonPressedBusObserver.CalculatorButtonPressed value) {
+                onCalculatorButtonPressed(value.getDigit());
             }
         });
     }
